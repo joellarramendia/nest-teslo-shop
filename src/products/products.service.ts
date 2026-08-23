@@ -19,18 +19,6 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
     try {
-      // if (!createProductDto.slug) {
-      //   createProductDto.slug = createProductDto.title
-      //     .toLowerCase()
-      //     .replaceAll(' ', '_')
-      //     .replaceAll("'", '')
-      // } else {
-      //   createProductDto.slug = createProductDto.slug
-      //     .toLowerCase()
-      //     .replaceAll(' ', '_')
-      //     .replaceAll("'", '')
-      // }
-
       const product = this.productRepository.create(createProductDto)
       await this.productRepository.save(product)
 
@@ -67,8 +55,21 @@ export class ProductsService {
     return product
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    const product = await this.productRepository.preload({
+      id: id,
+      ...updateProductDto
+    })
+
+    if (!product) throw new NotFoundException(`Product with id: ${id} not found`)
+
+    try {
+      await this.productRepository.save(product)
+      return product
+    } catch (error) {
+      this.handleDBExceptions(error)
+    }
+
   }
 
   async remove(id: string) {
