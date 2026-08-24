@@ -139,7 +139,7 @@ export class ProductsService {
     try {
       return await query
         .delete()
-        .from('product')
+        .from('products')
         .execute()
     } catch (error) {
       this.handleDBExceptions(error)
