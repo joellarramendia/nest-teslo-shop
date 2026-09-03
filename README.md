@@ -18,3 +18,9 @@ docker compose up -d
 ```
 http://localhost:3000/api/seed
 ```
+
+# Production notes:
+Ejecutar este comando
+```
+docker compose -f docker-compose.prod.yml build
+```
