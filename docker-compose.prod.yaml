@@ -4,6 +4,9 @@ services:
       context: .
       target: ${STAGE}
       dockerfile: Dockerfile
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
     image: joeldlg/teslo-shop-backend
     container_name: nest-teslo-shop
     ports:
